@@ -20,7 +20,7 @@
         <property value="0" name="cacheSeconds"/>
     </bean>
 
-    <jdbc:embedded-database id="embeddedDatasource" type="H2">
+    <!-- jdbc:embedded-database id="embeddedDatasource" type="H2">
         <jdbc:script location="classpath:schema.sql"/>
         <jdbc:script location="classpath:data.sql"/>
     </jdbc:embedded-database>
@@ -35,5 +35,5 @@
         <property name="dataSource" ref="embeddedDatasource"/>
     </bean>
 
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/ -->
 </beans>
