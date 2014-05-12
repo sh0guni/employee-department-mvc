@@ -21,14 +21,14 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
-    private Municipality municipality;
+    //private Municipality municipality;
 
     private String email;
 
     private Date contractBeginDate;
 
-    @Column(nullable = false)
-    private Department department;
+//    @Column(nullable = false)
+//    private Department department;
 
     protected Employee() {
     }
@@ -36,7 +36,7 @@ public class Employee {
     public Employee(String firstName, String lastName, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.department = department;
+        //this.department = department;
     }
 
     public String getFirstName() {
@@ -55,13 +55,13 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public Municipality getMunicipality() {
-        return municipality;
-    }
+//    public Municipality getMunicipality() {
+//        return municipality;
+//    }
 
-    public void setMunicipality(Municipality municipality) {
-        this.municipality = municipality;
-    }
+//    public void setMunicipality(Municipality municipality) {
+//        this.municipality = municipality;
+//    }
 
     public String getEmail() {
         return email;
@@ -79,11 +79,11 @@ public class Employee {
         this.contractBeginDate = contractBeginDate;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
+//    public Department getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(Department department) {
+//        this.department = department;
+//    }
 }

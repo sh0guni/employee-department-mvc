@@ -1,14 +1,15 @@
 package fi.solita.exercise.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity(name = "DEPARTMENTS")
 public class Department {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long departmentIdentifier;
 
