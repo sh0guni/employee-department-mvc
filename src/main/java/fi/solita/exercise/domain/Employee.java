@@ -11,10 +11,8 @@ import java.util.Date;
 public class Employee {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    @Column(nullable = false)
     private long employeeIdentifier;
 
     @Column(nullable = false)
@@ -35,20 +33,10 @@ public class Employee {
     protected Employee() {
     }
 
-    public Employee(long employeeIdentifier, String firstName, String lastName, Department department) {
-        this.id = id;
-        this.employeeIdentifier = employeeIdentifier;
+    public Employee(String firstName, String lastName, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
-    }
-
-    public long getEmployeeIdentifier() {
-        return employeeIdentifier;
-    }
-
-    public void setEmployeeIdentifier(long employeeIdentifier) {
-        this.employeeIdentifier = employeeIdentifier;
     }
 
     public String getFirstName() {

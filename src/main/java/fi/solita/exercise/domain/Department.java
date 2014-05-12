@@ -8,21 +8,18 @@ import javax.persistence.Id;
 public class Department {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long departmentIdentifier;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private long departmentIdentifier;
-
     protected Department() {
     }
 
-    public Department(String name, long departmentIdentifier) {
+    public Department(String name) {
         this.name = name;
-        this.departmentIdentifier = departmentIdentifier;
     }
 
     public String getName() {
@@ -31,13 +28,5 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getDepartmentIdentifier() {
-        return departmentIdentifier;
-    }
-
-    public void setDepartmentIdentifier(long departmentIdentifier) {
-        this.departmentIdentifier = departmentIdentifier;
     }
 }

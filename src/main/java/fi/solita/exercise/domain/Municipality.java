@@ -8,21 +8,18 @@ import javax.persistence.Id;
 public class Municipality {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long employeeIdentifier;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private long departmentIdentifier;
-
     protected Municipality() {
     }
 
-    public Municipality(String name, long departmentIdentifier) {
-        this.name = name;
-        this.departmentIdentifier = departmentIdentifier;
+    public Municipality(String name) {
+            this.name = name;
     }
 
     public String getName() {
@@ -31,13 +28,5 @@ public class Municipality {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getDepartmentIdentifier() {
-        return departmentIdentifier;
-    }
-
-    public void setDepartmentIdentifier(long departmentIdentifier) {
-        this.departmentIdentifier = departmentIdentifier;
     }
 }
