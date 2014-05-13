@@ -1,5 +1,7 @@
 package fi.solita.exercise.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ public class Department {
     private long departmentIdentifier;
 
     @Column(nullable = false)
+    @NotEmpty
     private String name;
 
     protected Department() {
