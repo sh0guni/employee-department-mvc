@@ -2,6 +2,7 @@ package fi.solita.exercise.service;
 
 import fi.solita.exercise.Application;
 import fi.solita.exercise.DAO.DepartmentsRepository;
+import fi.solita.exercise.DTO.DepartmentDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -21,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 @TransactionConfiguration(defaultRollback = true)
 public class DepartmentServiceIntegrationTest {
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private DepartmentsRepository repository;
 
@@ -56,6 +60,23 @@ public class DepartmentServiceIntegrationTest {
         service.addDepartment("dep1");
         service.addDepartment("dep2");
 
-        assertThat(service.getAllDepartments(), containsInAnyOrder("dep1", "dep2"));
+        assertThat(
+                service.getAllDepartments().stream()
+                        .map(x -> x.getName()).collect(Collectors.toList()),
+                containsInAnyOrder("dep1", "dep2")
+        );
+    }
+
+    @Test
+    public void testRemoveDepartmentByName() {
+        service.addDepartment("dep1");
+        service.addDepartment("dep2");
+        service.removeDepartmentByName("dep1");
+        assertEquals(1, service.findDepartmentCount());
+        assertThat(
+                service.getAllDepartments().stream()
+                        .map(x -> x.getName()).collect(Collectors.toList()),
+                containsInAnyOrder("dep2")
+        );
     }
 }

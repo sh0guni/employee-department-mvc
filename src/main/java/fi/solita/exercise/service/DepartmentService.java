@@ -29,11 +29,14 @@ public class DepartmentService {
         return new DepartmentDTO(departmentsRepository.findByName(name));
     }
 
-    public Iterable<String> getAllDepartments() {
-        Collection<String> departments = new ArrayList<String>();
-        for (Department dep : departmentsRepository.findAll()) {
-            departments.add(dep.getName());
-        }
+    public Collection<DepartmentDTO> getAllDepartments() {
+        Collection<DepartmentDTO> departments = new ArrayList<DepartmentDTO>();
+        departmentsRepository.findAll()
+                             .forEach(x -> departments.add(new DepartmentDTO(x)));
         return departments;
+    }
+
+    public void removeDepartmentByName(String departmentName) {
+        departmentsRepository.deleteByName(departmentName);
     }
 }
