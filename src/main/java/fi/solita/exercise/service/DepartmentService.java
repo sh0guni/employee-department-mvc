@@ -3,22 +3,23 @@ package fi.solita.exercise.service;
 import fi.solita.exercise.DAO.DepartmentsRepository;
 import fi.solita.exercise.DTO.DepartmentDTO;
 import fi.solita.exercise.domain.Department;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class DepartmentService {
 
-    private final DepartmentsRepository departmentsRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private DepartmentsRepository departmentsRepository;
 
-    public DepartmentService(DepartmentsRepository repository) {
-        this.departmentsRepository = repository;
-    }
-
-    public void addDepartment(String name) {
-        departmentsRepository.save(new Department(name));
+    public DepartmentDTO addDepartment(String name) {
+        Department department = new Department((name));
+        departmentsRepository.save(department);
+        return new DepartmentDTO(department);
     }
 
     public long findDepartmentCount() {
@@ -26,17 +27,22 @@ public class DepartmentService {
     }
 
     public DepartmentDTO getDepartment(String name) {
-        return new DepartmentDTO(departmentsRepository.findByName(name));
+        Department department = departmentsRepository.findByName(name);
+        if (department == null) {
+            return null;
+        } else {
+            return new DepartmentDTO(department);
+        }
     }
 
-    public Collection<DepartmentDTO> getAllDepartments() {
-        Collection<DepartmentDTO> departments = new ArrayList<DepartmentDTO>();
+    public List<DepartmentDTO> getAllDepartments() {
+        List<DepartmentDTO> departments = new ArrayList<DepartmentDTO>();
         departmentsRepository.findAll()
                              .forEach(x -> departments.add(new DepartmentDTO(x)));
         return departments;
     }
 
-    public void removeDepartmentByName(String departmentName) {
-        departmentsRepository.deleteByName(departmentName);
+    public int removeDepartmentByName(String departmentName) {
+        return departmentsRepository.deleteByName(departmentName);
     }
 }

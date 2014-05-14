@@ -22,18 +22,10 @@ import static org.junit.Assert.assertEquals;
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public class DepartmentServiceIntegrationTest {
+public class DepartmentServiceIntegrationTests {
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private DepartmentsRepository repository;
-
     private DepartmentService service;
-
-    @Before
-    public void setUp() {
-        service = new DepartmentService(repository);
-    }
 
     @Test
     public void testAddDepartment() {
