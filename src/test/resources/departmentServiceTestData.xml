@@ -1,0 +1,4 @@
+<dataset>
+    <department id="100" name="dep1"/>
+    <department id="200" name="dep2"/>
+</dataset>
