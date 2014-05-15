@@ -1,37 +1,23 @@
-package fi.solita.exercise.domain;
+package fi.solita.exercise.service;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-public class Employee {
+public class EmployeeDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
     private String lastName;
 
     private String email;
 
     private Date contractBeginDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Department department;
-
-    protected Employee() {
-    }
-
-    public Employee(String firstName, String lastName, String email, Date contractBeginDate, Department department) {
+    public EmployeeDTO(long id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-        this.contractBeginDate = contractBeginDate;
-        this.department = department;
     }
 
     public long getId() {
@@ -68,13 +54,5 @@ public class Employee {
 
     public void setContractBeginDate(Date contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 }
