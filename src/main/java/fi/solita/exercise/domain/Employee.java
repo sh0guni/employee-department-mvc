@@ -1,19 +1,14 @@
 package fi.solita.exercise.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Employee {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long employeeIdentifier;
+    private long id;
 
     @Column(nullable = false)
     private String firstName;
@@ -21,22 +16,23 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
-    //private Municipality municipality;
-
     private String email;
 
     private Date contractBeginDate;
 
-//    @Column(nullable = false)
-//    private Department department;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Department department;
 
     protected Employee() {
     }
 
-    public Employee(String firstName, String lastName, Department department) {
+    public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.department = department;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -55,14 +51,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-//    public Municipality getMunicipality() {
-//        return municipality;
-//    }
-
-//    public void setMunicipality(Municipality municipality) {
-//        this.municipality = municipality;
-//    }
-
     public String getEmail() {
         return email;
     }
@@ -79,11 +67,11 @@ public class Employee {
         this.contractBeginDate = contractBeginDate;
     }
 
-//    public Department getDepartment() {
-//        return department;
-//    }
-//
-//    public void setDepartment(Department department) {
-//        this.department = department;
-//    }
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 }

@@ -1,6 +1,6 @@
 package fi.solita.exercise.controller;
 
-import fi.solita.exercise.DTO.DepartmentDTO;
+import fi.solita.exercise.service.DepartmentDTO;
 import fi.solita.exercise.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +15,7 @@ import java.util.List;
 public class ExerciseController {
 
     @Autowired
-    DepartmentService departmentService;
+    private DepartmentService departmentService;
 
     @RequestMapping(value = "/departments", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -24,9 +24,9 @@ public class ExerciseController {
         return departmentService.getAllDepartments();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/departments/{name}")
-    public ResponseEntity<DepartmentDTO> getDepartmentByName(@PathVariable String name) {
-        DepartmentDTO department = departmentService.getDepartment(name);
+    @RequestMapping(method = RequestMethod.GET, value="/departments/{id}")
+    public ResponseEntity<DepartmentDTO> getDepartmentByName(@PathVariable long id) {
+        DepartmentDTO department = departmentService.getDepartment(id);
 
         if (department == null) {
             return new ResponseEntity<DepartmentDTO>(HttpStatus.NOT_FOUND);
@@ -40,8 +40,8 @@ public class ExerciseController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
-                builder.path("/departments/{name}")
-                        .buildAndExpand(name).toUri());
+                builder.path("/departments/{id}")
+                        .buildAndExpand(department.getId()).toUri());
 
         return new ResponseEntity<DepartmentDTO>(department, headers, HttpStatus.CREATED);
     }

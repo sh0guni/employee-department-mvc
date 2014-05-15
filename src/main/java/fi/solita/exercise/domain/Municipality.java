@@ -1,16 +1,13 @@
 package fi.solita.exercise.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class Municipality {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long employeeIdentifier;
+    private long id;
 
     @Column(nullable = false)
     private String name;
@@ -20,6 +17,10 @@ public class Municipality {
 
     public Municipality(String name) {
             this.name = name;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
