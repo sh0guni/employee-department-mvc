@@ -6,6 +6,9 @@ public class DepartmentDTO {
 
     private String name;
 
+    protected DepartmentDTO() {
+    }
+
     public DepartmentDTO(long id, String name) {
         this.id = id;
         this.name = name;

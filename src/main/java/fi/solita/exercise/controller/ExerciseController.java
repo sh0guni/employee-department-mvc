@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,14 +37,25 @@ public class ExerciseController {
     }
 
     @RequestMapping(value="/departments", method = RequestMethod.POST)
-    public ResponseEntity<DepartmentDTO> addDepartment(@RequestBody String name, UriComponentsBuilder builder) {
-        DepartmentDTO department = departmentService.addDepartment(name);
+    public ResponseEntity<DepartmentDTO>
+    addDepartment(@RequestBody DepartmentDTO department,
+                  UriComponentsBuilder builder) {
+        DepartmentDTO newDepartment =
+                departmentService.addDepartment(department.getName());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
                 builder.path("/departments/{id}")
-                        .buildAndExpand(department.getId()).toUri());
+                        .buildAndExpand(newDepartment.getId()).toUri());
 
-        return new ResponseEntity<DepartmentDTO>(department, headers, HttpStatus.CREATED);
+        return new ResponseEntity<DepartmentDTO>(
+                newDepartment, headers,HttpStatus.CREATED);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity handleBadInput(HttpMessageNotReadableException ex) throws Exception {
+        Throwable cause = ex.getCause();
+        cause.printStackTrace();
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

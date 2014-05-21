@@ -1,3 +1,16 @@
-ddddfd partials
-
-<h1>{{h1Text}}</h1>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            Hems
+        </div>
+        <div class="span10">
+            {{h1Text}}
+            <ul class="departments">
+                hems
+                <li ng-repeat="department in departments">
+                    Nimi: {{department.name}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

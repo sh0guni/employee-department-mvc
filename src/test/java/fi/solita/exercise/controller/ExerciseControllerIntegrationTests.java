@@ -40,10 +40,10 @@ public class ExerciseControllerIntegrationTests {
 
     @Test
     public void addNewDepartmentTest() throws Exception {
-        String testName = "TestDepartment";
+        String testDepartment = "{ \"name\": \"TestDepartment\" }";
         this.mockMvc.perform(
                 post("/departments")
-                        .content(testName)
+                        .content(testDepartment)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -56,6 +56,6 @@ public class ExerciseControllerIntegrationTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(testName)));
+                .andExpect(jsonPath("$[0].name", is("TestDepartment")));
     }
 }
