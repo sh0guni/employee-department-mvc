@@ -56,13 +56,12 @@ public class DepartmentServiceIntegrationTests {
 
     @Test
     public void deleteDepartmentTest() {
-        DepartmentDTO department = service.addDepartment("dep3");
-        service.deleteDepartment(department.getId());
-        assertEquals(2, service.findDepartmentCount());
+        service.deleteDepartment(100);
+        assertEquals(1, service.findDepartmentCount());
         assertThat(
                 service.getAllDepartments().stream()
                         .map(x -> x.getName()).collect(Collectors.toList()),
-                containsInAnyOrder("dep1", "dep2")
+                containsInAnyOrder("dep2")
         );
     }
 }

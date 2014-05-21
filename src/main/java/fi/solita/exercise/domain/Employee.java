@@ -3,24 +3,25 @@ package fi.solita.exercise.domain;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "EMPLOYEE")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    @Column(name = "FIRSTNAME", nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
     private String email;
 
     private Date contractBeginDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "departmentid")
     private Department department;
 
     protected Employee() {

@@ -1,0 +1,5 @@
+<dataset>
+    <department id="100" name="dep1"/>
+    <employee id="100" firstName="fname1" lastName="lname1" departmentid="100"/>
+    <employee id="200" firstName="fname2" lastName="lname2" departmentid="100"/>
+</dataset>

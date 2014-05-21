@@ -34,7 +34,7 @@ public class ExerciseController {
         return new ResponseEntity<DepartmentDTO>(department, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/departments", method = RequestMethod.POST)
     public ResponseEntity<DepartmentDTO> addDepartment(@RequestBody String name, UriComponentsBuilder builder) {
         DepartmentDTO department = departmentService.addDepartment(name);
 

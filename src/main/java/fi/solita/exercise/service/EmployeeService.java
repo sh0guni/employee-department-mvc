@@ -4,6 +4,7 @@ import fi.solita.exercise.dao.DepartmentsRepository;
 import fi.solita.exercise.dao.EmployeeRepository;
 import fi.solita.exercise.domain.Department;
 import fi.solita.exercise.domain.Employee;
+import fi.solita.exercise.util.DtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,12 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
     private DepartmentsRepository departmentsRepository;
+
+    @Autowired
+    private DtoFactory employeeDtoFactory;
 
     public EmployeeDTO addEmployee(String firstName, String lastName,
                                    String email, Date contractBeginDate,
@@ -26,8 +32,9 @@ public class EmployeeService {
         Department department = departmentsRepository.getOne(departmentId);
         Employee employee = new Employee(firstName, lastName, email,
                 contractBeginDate, department);
+        department.addEmployee(employee);
         employeeRepository.save(employee);
-        return new EmployeeDTO(employee.getId(), employee.getFirstName(), employee.getLastName());
+        return employeeDtoFactory.createEmployee(employee);
     }
 
     public long findEmployeeCount() {
@@ -36,14 +43,14 @@ public class EmployeeService {
 
     public EmployeeDTO getEmployee(long id) {
         Employee employee = employeeRepository.getOne(id);
-        return new EmployeeDTO(employee.getId(), employee.getFirstName(), employee.getLastName());
+        return employeeDtoFactory.createEmployee(employee);
     }
 
-    public List<EmployeeDTO> getAllDepartments() {
-        List<EmployeeDTO> employees = new ArrayList<EmployeeDTO>();
-        employeeRepository.findAll()
-                             .forEach(x -> employees.add(new EmployeeDTO(x.getId(),
-                                     x.getFirstName(), x.getLastName())));
+    public List<EmployeeDTO> getEmployeesOfDepartment(long departmentId) {
+        Department department = departmentsRepository.getOne(departmentId);
+        List<EmployeeDTO> employees = new ArrayList<>();
+        department.getEmployees().forEach(x -> employees.add(
+                                     employeeDtoFactory.createEmployee(x)));
         return employees;
     }
 

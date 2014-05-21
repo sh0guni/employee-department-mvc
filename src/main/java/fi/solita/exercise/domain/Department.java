@@ -3,6 +3,7 @@ package fi.solita.exercise.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "DEPARTMENT")
@@ -16,9 +17,10 @@ public class Department {
     @NotEmpty
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "department")
-    private Set<Employee> employees;
+    @OneToMany(mappedBy = "department")
+    private Set<Employee> employees = new HashSet<Employee>();
 
+    @SuppressWarnings("UnusedDeclaration")
     protected Department() {
     }
 
@@ -42,7 +44,7 @@ public class Department {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
     }
 }

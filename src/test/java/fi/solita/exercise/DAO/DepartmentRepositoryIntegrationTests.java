@@ -17,8 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@Transactional
-@TransactionConfiguration(defaultRollback = true)
 public class DepartmentRepositoryIntegrationTests {
 
     @Autowired
