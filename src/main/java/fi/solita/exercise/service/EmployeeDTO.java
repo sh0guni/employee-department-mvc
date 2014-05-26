@@ -16,6 +16,11 @@ public class EmployeeDTO {
 
     private DepartmentDTO department;
 
+    private long departmentId;
+
+    private EmployeeDTO() {
+    }
+
     public EmployeeDTO(long id, String firstName, String lastName, String email, Date contractBeginDate, DepartmentDTO department) {
         this.id = id;
         this.firstName = firstName;
@@ -69,6 +74,10 @@ public class EmployeeDTO {
         this.department = department;
     }
 
+    public long getDepartmentId() {
+        return departmentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,5 +88,10 @@ public class EmployeeDTO {
         if (id != that.id) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

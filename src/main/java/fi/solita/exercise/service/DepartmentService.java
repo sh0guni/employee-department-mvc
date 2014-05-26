@@ -5,13 +5,12 @@ import fi.solita.exercise.domain.Department;
 import fi.solita.exercise.util.DtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class DepartmentService {
 
     @Autowired
@@ -20,21 +19,25 @@ public class DepartmentService {
     @Autowired
     private DtoFactory departmentDtoFactory;
 
+    @Transactional
     public DepartmentDTO addDepartment(String name) {
         Department department = new Department((name));
         departmentsRepository.save(department);
         return new DepartmentDTO(department.getId(), department.getName());
     }
 
+    @Transactional(readOnly = true)
     public long findDepartmentCount() {
         return departmentsRepository.count();
     }
 
+    @Transactional(readOnly = true)
     public DepartmentDTO getDepartment(long id) {
         Department department = departmentsRepository.getOne(id);
         return departmentDtoFactory.createDepartment(department);
     }
 
+    @Transactional(readOnly = true)
     public List<DepartmentDTO> getAllDepartments() {
         List<DepartmentDTO> departments = new ArrayList<DepartmentDTO>();
         departmentsRepository.findAll()
@@ -43,6 +46,7 @@ public class DepartmentService {
         return departments;
     }
 
+    @Transactional
     public void deleteDepartment(long id) {
         departmentsRepository.delete(id);
     }

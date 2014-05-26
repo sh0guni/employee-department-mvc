@@ -7,14 +7,13 @@ import fi.solita.exercise.domain.Employee;
 import fi.solita.exercise.util.DtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional
 public class EmployeeService {
 
     @Autowired
@@ -26,6 +25,7 @@ public class EmployeeService {
     @Autowired
     private DtoFactory employeeDtoFactory;
 
+    @Transactional
     public EmployeeDTO addEmployee(String firstName, String lastName,
                                    String email, Date contractBeginDate,
                                    long departmentId) {
@@ -37,15 +37,18 @@ public class EmployeeService {
         return employeeDtoFactory.createEmployee(employee);
     }
 
+    @Transactional(readOnly = true)
     public long findEmployeeCount() {
         return employeeRepository.count();
     }
 
+    @Transactional(readOnly = true)
     public EmployeeDTO getEmployee(long id) {
         Employee employee = employeeRepository.getOne(id);
         return employeeDtoFactory.createEmployee(employee);
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeDTO> getEmployeesOfDepartment(long departmentId) {
         Department department = departmentsRepository.getOne(departmentId);
         List<EmployeeDTO> employees = new ArrayList<>();
@@ -54,6 +57,7 @@ public class EmployeeService {
         return employees;
     }
 
+    @Transactional
     public void deleteEmployee(long id) {
         employeeRepository.delete(id);
     }

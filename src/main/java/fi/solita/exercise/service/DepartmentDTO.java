@@ -6,7 +6,7 @@ public class DepartmentDTO {
 
     private String name;
 
-    protected DepartmentDTO() {
+    private DepartmentDTO() {
     }
 
     public DepartmentDTO(long id, String name) {
@@ -36,5 +36,10 @@ public class DepartmentDTO {
         if (id != that.id) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

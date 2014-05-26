@@ -1,16 +1,54 @@
 <div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span2">
-            Hems
-        </div>
-        <div class="span10">
-            {{h1Text}}
+    <div class="row">
+        <div class="col-md4">
             <ul class="departments">
-                hems
+                Departments:
                 <li ng-repeat="department in departments">
-                    Nimi: {{department.name}}
+                    Id: {{department.id}}
+                    Name: {{department.name}}
+                    Employees: {{department.employeeCount}}
+                    <button class="btn btn-default" ng-click="chooseDepartment(department.id)">
+                        Employees
+                    </button>
+                    <!--
+                    <ul class="employees">
+                        <li ng-repeat="employee in employees">
+                            Id: {{employee.id}}
+                            Name: {{employee.firstName}} {{employee.lastName}}
+                        </li>
+                    </ul>
+                    -->
                 </li>
             </ul>
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label">Department name:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" ng-model="departmentName">
+                </div>
+                <button class="btn btn-default" ng-click="addDepartment(departmentName)">
+                    Add department
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            Chosen department: {{chosenDepartment.id}} {{chosenDepartment.name}}
+            <ul class="cemployees">
+                <li ng-repeat="employee in employees">
+                    Id: {{employee.id}}
+                    Name: {{employee.firstName}} {{employee.lastName}}
+                    <button class="btn btn-default" ng-click="">
+                        Edit employee
+                    </button>
+                    <button class="btn btn-default" ng-click="deleteEmployee(employee, $index)">
+                        Remove employee
+                    </button>
+                </li>
+            </ul>
+            <button class="btn btn-default" ng-click="openNewEmployeeDlg()">
+                Add employee
+            </button>
         </div>
     </div>
 </div>
