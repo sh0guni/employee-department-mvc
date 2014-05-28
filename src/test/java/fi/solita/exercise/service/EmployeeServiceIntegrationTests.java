@@ -4,6 +4,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import fi.solita.exercise.Application;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ public class EmployeeServiceIntegrationTests {
 
     @Test
     public void addEmployeeTest() throws Exception {
-        EmployeeDTO employee = service.addEmployee("Simo", "Solita",
-                "simo@solita.fi", new Date(), 100);
+        EmployeeDTO employee = service.addEmployee(new EmployeeDTO(0, "Simo", "Solita",
+                "simo@solita.fi", new DateTime(), new DepartmentDTO(100, "dep1", 0)));
         EmployeeDTO employeeFromService = service.getEmployee(employee.getId());
         assertEquals(employee.getFirstName(),
                 employeeFromService.getFirstName());

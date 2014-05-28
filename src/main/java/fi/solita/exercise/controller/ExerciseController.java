@@ -1,5 +1,6 @@
 package fi.solita.exercise.controller;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import fi.solita.exercise.service.DepartmentDTO;
 import fi.solita.exercise.service.DepartmentService;
 import fi.solita.exercise.service.EmployeeDTO;
@@ -12,7 +13,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ExerciseController {
@@ -31,7 +34,7 @@ public class ExerciseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value="/departments/{id}")
-    public ResponseEntity<DepartmentDTO> getDepartmentByName(@PathVariable long id) {
+    public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable long id) {
         DepartmentDTO department = departmentService.getDepartment(id);
 
         if (department == null) {
@@ -56,6 +59,19 @@ public class ExerciseController {
                 newDepartment, headers,HttpStatus.CREATED);
     }
 
+    @RequestMapping(value="/departments/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<DepartmentDTO> updateDepartment(@RequestBody DepartmentDTO department) {
+        DepartmentDTO updatedDepartment = departmentService.updateDepartment(department);
+        return new ResponseEntity<DepartmentDTO>(updatedDepartment, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/departments/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteDepartment(@PathVariable long id) {
+        departmentService.deleteDepartment(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value="/departments/{id}/employees", method = RequestMethod.GET)
     public ResponseEntity<List<EmployeeDTO>> getDepartmentEmployees(@PathVariable long id) {
         List<EmployeeDTO> employees = employeeService.getEmployeesOfDepartment(id);
@@ -71,7 +87,7 @@ public class ExerciseController {
     addEmployee(@RequestBody EmployeeDTO employee,
                   UriComponentsBuilder builder) {
         EmployeeDTO newEmployee =
-                employeeService.addEmployee(employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getContractBeginDate(), employee.getDepartmentId());
+                employeeService.addEmployee(employee);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(
@@ -83,10 +99,24 @@ public class ExerciseController {
                 newEmployee, headers,HttpStatus.CREATED);
     }
 
+    @RequestMapping(value="/employees/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee) {
+        EmployeeDTO updatedEmployee = employeeService.updateEmployee(employee);
+        return new ResponseEntity<EmployeeDTO>(updatedEmployee, HttpStatus.OK);
+    }
+
     @RequestMapping(value="/employees/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteEmployee(@PathVariable long id) {
         employeeService.deleteEmployee(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/employees/count", method = RequestMethod.GET)
+    @ResponseBody public ResponseEntity<HashMap<String, Long>> findEmployeeCount() {
+        HashMap<String, Long> employeeCount = new HashMap<String, Long>();
+        employeeCount.put("count", employeeService.findEmployeeCount());
+        return new ResponseEntity<HashMap<String, Long>>(employeeCount, HttpStatus.OK);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

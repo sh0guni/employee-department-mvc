@@ -47,4 +47,8 @@ public class Department {
     public void addEmployee(Employee employee) {
         employees.add(employee);
     }
+
+    public int getEmployeeCount() {
+        return employees.size();
+    }
 }

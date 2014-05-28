@@ -1,6 +1,6 @@
 package fi.solita.exercise.service;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class EmployeeDTO {
 
@@ -12,7 +12,7 @@ public class EmployeeDTO {
 
     private String email;
 
-    private Date contractBeginDate;
+    private DateTime contractBeginDate;
 
     private DepartmentDTO department;
 
@@ -21,7 +21,7 @@ public class EmployeeDTO {
     private EmployeeDTO() {
     }
 
-    public EmployeeDTO(long id, String firstName, String lastName, String email, Date contractBeginDate, DepartmentDTO department) {
+    public EmployeeDTO(long id, String firstName, String lastName, String email, DateTime contractBeginDate, DepartmentDTO department) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,11 +58,11 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public Date getContractBeginDate() {
+    public DateTime getContractBeginDate() {
         return contractBeginDate;
     }
 
-    public void setContractBeginDate(Date contractBeginDate) {
+    public void setContractBeginDate(DateTime contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
     }
 

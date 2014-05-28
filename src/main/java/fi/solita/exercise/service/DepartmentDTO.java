@@ -6,12 +6,15 @@ public class DepartmentDTO {
 
     private String name;
 
+    private int employeeCount;
+
     private DepartmentDTO() {
     }
 
-    public DepartmentDTO(long id, String name) {
+    public DepartmentDTO(long id, String name, int employeeCount) {
         this.id = id;
         this.name = name;
+        this.employeeCount = employeeCount;
     }
 
     public long getId() {
@@ -24,6 +27,10 @@ public class DepartmentDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getEmployeeCount() {
+        return employeeCount;
     }
 
     @Override

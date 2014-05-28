@@ -23,7 +23,7 @@ public class DepartmentService {
     public DepartmentDTO addDepartment(String name) {
         Department department = new Department((name));
         departmentsRepository.save(department);
-        return new DepartmentDTO(department.getId(), department.getName());
+        return new DepartmentDTO(department.getId(), department.getName(), 0);
     }
 
     @Transactional(readOnly = true)
@@ -44,6 +44,13 @@ public class DepartmentService {
                              .forEach(x -> departments.add(departmentDtoFactory
                                      .createDepartment(x)));
         return departments;
+    }
+
+    @Transactional
+    public DepartmentDTO updateDepartment(DepartmentDTO department) {
+        Department domainDepartment = departmentsRepository.getOne(department.getId());
+        domainDepartment.setName(department.getName());
+        return departmentDtoFactory.createDepartment(domainDepartment);
     }
 
     @Transactional

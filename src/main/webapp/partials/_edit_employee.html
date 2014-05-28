@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-    <h4 class="modal-title">New employee for department {{chosenDepartment.name}}</h4>
+    <h4 class="modal-title">Edit employee info</h4>
 </div>
 <div class="modal-body">
     <form class="form-horizontal" name="theForm" role="form" data-ng-submit="submit();">
@@ -22,11 +22,11 @@
                 <input id="email" name="email" type="text" class="form-control" data-ng-model="employee.email" data-ng-required="true"/>
             </div>
         </div>
-        <div class="form-group" data-ng-class="{'has-error': theForm.contractBeginDate.$invalid,'has-success': theForm.contractBeginDate.$valid}">
+        <div class="form-group" data-ng-class="{'has-success': theForm.contractBeginDate.$valid,'has-error': theForm.contractBeginDate.$invalid}">
             <label for="contractBeginDate" class="col-sm-3 control-label">Contract begin date</label>
             <div class="col-sm-9">
                 <div class="input-group datepicker-popup">
-                    <input id="contractBeginDate" name="contractBeginDate" type="text" class="form-control" datepicker-popup="yyyy-MM-dd" data-ng-model="employee.contractBeginDate" data-is-open="contractBeginDateOptions.open" data-show-weeks="false" data-show-button-bar="false" data-min="contractBeginDateOptions.minimum" data-ng-required="true" />
+                    <input id="contractBeginDate" name="contractBeginDate" type="text" class="form-control" datepicker-popup="yyyy-MM-dd" data-ng-model="employee.contractBeginDate" data-is-open="contractBeginDateOptions.open" datepicker-options="contractBeginDateOptions" data-show-weeks="false" data-show-button-bar="false" data-min="contractBeginDateOptions.minimum" data-ng-required="true" />
                     <span class="input-group-btn">
                     <button class="btn btn-default" data-ng-click="openContractBeginDate($event);" type="button"><span class="glyphicon glyphicon-calendar"></span>&#xFEFF;</button>
                     </span>
@@ -37,5 +37,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="cancel();">Cancel</button>
-    <button type="submit" class="btn btn-primary" data-ng-disabled="theForm.$invalid" data-ng-click="submit();">Save employee</button>
+    <button type="submit" class="btn btn-primary" data-ng-disabled="theForm.$invalid" data-ng-click="submit();">Save changes</button>
 </div>

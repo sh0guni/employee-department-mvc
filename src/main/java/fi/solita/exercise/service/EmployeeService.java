@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,15 +25,26 @@ public class EmployeeService {
     private DtoFactory employeeDtoFactory;
 
     @Transactional
-    public EmployeeDTO addEmployee(String firstName, String lastName,
-                                   String email, Date contractBeginDate,
-                                   long departmentId) {
-        Department department = departmentsRepository.getOne(departmentId);
-        Employee employee = new Employee(firstName, lastName, email,
-                contractBeginDate, department);
-        department.addEmployee(employee);
-        employeeRepository.save(employee);
-        return employeeDtoFactory.createEmployee(employee);
+    public EmployeeDTO addEmployee(EmployeeDTO employee) {
+        Department department = departmentsRepository.getOne(employee.getDepartmentId());
+        Employee newEmployee = new Employee(employee.getFirstName(), employee.getLastName(),
+                employee.getEmail(), employee.getContractBeginDate(), department);
+        department.addEmployee(newEmployee);
+        employeeRepository.save(newEmployee);
+        return employeeDtoFactory.createEmployee(newEmployee);
+    }
+
+    @Transactional
+    public EmployeeDTO updateEmployee(EmployeeDTO employee) {
+        Employee domainEmployee = employeeRepository.getOne(employee.getId());
+        domainEmployee.setFirstName(employee.getFirstName());
+        domainEmployee.setLastName(employee.getLastName());
+        domainEmployee.setEmail(employee.getEmail());
+        domainEmployee.setContractBeginDate(employee.getContractBeginDate());
+        Department department = departmentsRepository.getOne(employee.getDepartment().getId());
+        domainEmployee.setDepartment(department);
+        department.addEmployee(domainEmployee);
+        return employeeDtoFactory.createEmployee(domainEmployee);
     }
 
     @Transactional(readOnly = true)

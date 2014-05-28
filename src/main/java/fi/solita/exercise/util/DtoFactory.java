@@ -17,6 +17,6 @@ public class DtoFactory {
     }
 
     public DepartmentDTO createDepartment(Department domain) {
-        return new DepartmentDTO(domain.getId(), domain.getName());
+        return new DepartmentDTO(domain.getId(), domain.getName(), domain.getEmployeeCount());
     }
 }

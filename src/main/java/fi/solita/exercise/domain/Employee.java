@@ -1,7 +1,9 @@
 package fi.solita.exercise.domain;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity(name = "EMPLOYEE")
 public class Employee {
@@ -16,9 +18,12 @@ public class Employee {
     @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
+    @Column
     private String email;
 
-    private Date contractBeginDate;
+    @Column
+    //@Type(type="org.joda.time.contrib.hibernate.PersistentInstantAsBigInt")
+    private DateTime contractBeginDate;
 
     @ManyToOne
     @JoinColumn(name = "departmentid")
@@ -27,7 +32,7 @@ public class Employee {
     protected Employee() {
     }
 
-    public Employee(String firstName, String lastName, String email, Date contractBeginDate, Department department) {
+    public Employee(String firstName, String lastName, String email, DateTime contractBeginDate, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -63,11 +68,11 @@ public class Employee {
         this.email = email;
     }
 
-    public Date getContractBeginDate() {
+    public DateTime getContractBeginDate() {
         return contractBeginDate;
     }
 
-    public void setContractBeginDate(Date contractBeginDate) {
+    public void setContractBeginDate(DateTime contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
     }
 
