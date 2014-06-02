@@ -1,4 +1,4 @@
 <dataset>
-    <municipality id="1000" name="mun1"/>
-    <municipality id="2000" name="mun2"/>
+    <municipality id="1" name="mun1"/>
+    <municipality id="2" name="mun2"/>
 </dataset>

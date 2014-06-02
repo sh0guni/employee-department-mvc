@@ -1,14 +1,20 @@
 package fi.solita.exercise.controller;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import fi.solita.exercise.Application;
+import fi.solita.exercise.dao.EmployeeRepository;
+import fi.solita.exercise.service.EmployeeService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -31,15 +37,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-@DatabaseSetup("/controllerTestData.xml")
+@DatabaseSetup(value="/controllerTestData.xml", type= DatabaseOperation.CLEAN_INSERT)
+@DatabaseTearDown(value="/controllerTestData.xml", type= DatabaseOperation.DELETE_ALL)
 public class ExerciseControllerIntegrationTests {
 
     @Autowired
     WebApplicationContext webApplicationContext;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     private MockMvc mockMvc;
 
@@ -48,6 +59,12 @@ public class ExerciseControllerIntegrationTests {
         this.mockMvc = MockMvcBuilders
                         .webAppContextSetup(this.webApplicationContext)
                         .build();
+    }
+
+    @After
+    @Autowired
+    public void tearDown() {
+        employeeRepository.deleteAll();
     }
 
     @Test
