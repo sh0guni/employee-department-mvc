@@ -21,7 +21,7 @@ controllers.controller('IndexCtrl', ['$scope', '$rootScope', '$modal', 'Departme
 
                 modalInstance.result.then(
                     function(newDepartment) {
-                        $scope.departments.push(newDepartment);
+                        $scope.departments = Department.query();
                     },
                     function() {
                     }
@@ -122,9 +122,20 @@ controllers.controller('IndexCtrl', ['$scope', '$rootScope', '$modal', 'Departme
 
                 modalInstance.result.then(
                     function(){
-                        department.$remove({departmentId:department.id});
-                        $scope.departments.splice(departmentIndex, 1);
-                    },function(){
+                        Department.remove({departmentId:department.id})
+                            .$promise.then(
+                            function() {
+                                $scope.departments = Department.query();
+                            }, function(data) {
+                                if (data.status === 403) {
+                                    if (department.employeeCount > 0) {
+                                        $scope.alerts.push({
+                                            type: 'danger',
+                                            msg: 'Cannot delete a department with employees'
+                                        });
+                                    }
+                                }
+                            });
                     }
                 );
             }

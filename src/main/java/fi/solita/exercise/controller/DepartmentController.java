@@ -64,7 +64,11 @@ public class DepartmentController {
 
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteDepartment(@PathVariable long id) {
-        departmentService.deleteDepartment(id);
+        try {
+            departmentService.deleteDepartment(id);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<String>("Cannot remove department with employees", HttpStatus.FORBIDDEN);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

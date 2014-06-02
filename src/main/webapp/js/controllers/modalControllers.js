@@ -91,7 +91,6 @@ controllers.controller('EditEmployeeCtrl', ['$scope', '$modalInstance', 'origina
         $scope.municipalities = Municipality.query();
         $scope.municipality = {};
         $scope.municipality.selected = Municipality.get({municipalityId:originalEmployee.municipalityId});
-        console.log(originalEmployee);
 
         $scope.contractBeginDateOptions = {
             'year-format': "'yyyy'",
@@ -104,29 +103,6 @@ controllers.controller('EditEmployeeCtrl', ['$scope', '$modalInstance', 'origina
             $event.stopPropagation();
             $scope.contractBeginDateOptions.open = true;
         };
-
-        /*
-        $scope.toggleDropdown = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.status.isopen = !$scope.status.isopen;
-        };
-
-        $scope.disabled = undefined;
-
-        $scope.enable = function() {
-            $scope.disabled = false;
-        };
-
-        $scope.disable = function() {
-            $scope.disabled = true;
-        };
-
-        $scope.clear = function() {
-            $scope.person.selected = undefined;
-            $scope.address.selected = undefined;
-            $scope.country.selected = undefined;
-        };*/
 
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
