@@ -6,14 +6,14 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "DEPARTMENT")
+@Entity
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    @Column
     @NotEmpty
     private String name;
 
@@ -46,6 +46,10 @@ public class Department {
 
     public void addEmployee(Employee employee) {
         employees.add(employee);
+    }
+
+    public boolean removeEmployee(Employee employee) {
+        return employees.remove(employee);
     }
 
     public int getEmployeeCount() {

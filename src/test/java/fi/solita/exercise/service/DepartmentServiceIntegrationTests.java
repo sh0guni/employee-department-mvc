@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-@DatabaseSetup("/departmentServiceTestData.xml")
+@DatabaseSetup("/serviceTestData.xml")
 public class DepartmentServiceIntegrationTests {
 
     @Autowired
@@ -56,12 +56,17 @@ public class DepartmentServiceIntegrationTests {
 
     @Test
     public void deleteDepartmentTest() {
-        service.deleteDepartment(100);
+        service.deleteDepartment(200);
         assertEquals(1, service.findDepartmentCount());
         assertThat(
                 service.getAllDepartments().stream()
                         .map(x -> x.getName()).collect(Collectors.toList()),
-                containsInAnyOrder("dep2")
+                containsInAnyOrder("dep1")
         );
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void deleteDepartmentWithEmployeesTest() {
+        service.deleteDepartment(100);
     }
 }

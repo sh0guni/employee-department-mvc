@@ -1,10 +1,9 @@
 package fi.solita.exercise.controller;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import fi.solita.exercise.service.DepartmentDTO;
-import fi.solita.exercise.service.DepartmentService;
+import fi.solita.exercise.service.EmployeeCreateDTO;
 import fi.solita.exercise.service.EmployeeDTO;
 import fi.solita.exercise.service.EmployeeService;
+import fi.solita.exercise.service.EmployeeUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,62 +14,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-public class ExerciseController {
-
-    @Autowired
-    private DepartmentService departmentService;
+public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
-
-    @RequestMapping(value = "/departments", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public List<DepartmentDTO> getAllDepartments() {
-        return departmentService.getAllDepartments();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value="/departments/{id}")
-    public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable long id) {
-        DepartmentDTO department = departmentService.getDepartment(id);
-
-        if (department == null) {
-            return new ResponseEntity<DepartmentDTO>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<DepartmentDTO>(department, HttpStatus.OK);
-    }
-
-    @RequestMapping(value="/departments", method = RequestMethod.POST)
-    public ResponseEntity<DepartmentDTO>
-    addDepartment(@RequestBody DepartmentDTO department,
-                  UriComponentsBuilder builder) {
-        DepartmentDTO newDepartment =
-                departmentService.addDepartment(department.getName());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(
-                builder.path("/departments/{id}")
-                        .buildAndExpand(newDepartment.getId()).toUri());
-
-        return new ResponseEntity<DepartmentDTO>(
-                newDepartment, headers,HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value="/departments/{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseEntity<DepartmentDTO> updateDepartment(@RequestBody DepartmentDTO department) {
-        DepartmentDTO updatedDepartment = departmentService.updateDepartment(department);
-        return new ResponseEntity<DepartmentDTO>(updatedDepartment, HttpStatus.OK);
-    }
-
-    @RequestMapping(value="/departments/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteDepartment(@PathVariable long id) {
-        departmentService.deleteDepartment(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     @RequestMapping(value="/departments/{id}/employees", method = RequestMethod.GET)
     public ResponseEntity<List<EmployeeDTO>> getDepartmentEmployees(@PathVariable long id) {
@@ -84,7 +33,7 @@ public class ExerciseController {
 
     @RequestMapping(value="/employees", method = RequestMethod.POST)
     public ResponseEntity<EmployeeDTO>
-    addEmployee(@RequestBody EmployeeDTO employee,
+    addEmployee(@RequestBody EmployeeCreateDTO employee,
                   UriComponentsBuilder builder) {
         EmployeeDTO newEmployee =
                 employeeService.addEmployee(employee);
@@ -101,7 +50,7 @@ public class ExerciseController {
 
     @RequestMapping(value="/employees/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeUpdateDTO employee) {
         EmployeeDTO updatedEmployee = employeeService.updateEmployee(employee);
         return new ResponseEntity<EmployeeDTO>(updatedEmployee, HttpStatus.OK);
     }

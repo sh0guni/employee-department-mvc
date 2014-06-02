@@ -1,5 +1,7 @@
 package fi.solita.exercise.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,9 +11,11 @@ public class Municipality {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotEmpty
     private String name;
 
+    @SuppressWarnings("UnusedDeclaration")
     protected Municipality() {
     }
 

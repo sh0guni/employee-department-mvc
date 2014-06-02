@@ -2,8 +2,10 @@ package fi.solita.exercise.util;
 
 import fi.solita.exercise.domain.Department;
 import fi.solita.exercise.domain.Employee;
+import fi.solita.exercise.domain.Municipality;
 import fi.solita.exercise.service.DepartmentDTO;
 import fi.solita.exercise.service.EmployeeDTO;
+import fi.solita.exercise.service.MunicipalityDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,10 +15,14 @@ public class DtoFactory {
         return new EmployeeDTO(domain.getId(),
                 domain.getFirstName(), domain.getLastName(),
                 domain.getEmail(), domain.getContractBeginDate(),
-                createDepartment(domain.getDepartment()));
+                domain.getDepartmentId(), domain.getMunicipalityId());
     }
 
     public DepartmentDTO createDepartment(Department domain) {
         return new DepartmentDTO(domain.getId(), domain.getName(), domain.getEmployeeCount());
+    }
+
+    public MunicipalityDTO createMunicipality(Municipality domain) {
+        return new MunicipalityDTO(domain.getId(), domain.getName());
     }
 }

@@ -73,7 +73,7 @@ public class ExerciseControllerIntegrationTests {
 
     @Test
     public void addEmployeeToDepartmentTest() throws Exception {
-        String testEmployee = "{ \"firstName\": \"Simo\", \"lastName\": \"Solita\", \"email\": \"simo@solita.fi\", \"firstName\": \"Simo\", \"contractBeginDate\":0, \"departmentId\": 100 }";
+        String testEmployee = "{ \"firstName\": \"Simo\", \"lastName\": \"Solita\", \"email\": \"simo@solita.fi\", \"firstName\": \"Simo\", \"contractBeginDate\":0, \"departmentId\": 100, \"municipalityId\": 100 }";
         this.mockMvc.perform(
                 post("/employees")
                         .content(testEmployee)

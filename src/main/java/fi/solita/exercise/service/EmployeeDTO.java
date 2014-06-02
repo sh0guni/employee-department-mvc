@@ -14,20 +14,21 @@ public class EmployeeDTO {
 
     private DateTime contractBeginDate;
 
-    private DepartmentDTO department;
-
     private long departmentId;
+
+    private long municipalityId;
 
     private EmployeeDTO() {
     }
 
-    public EmployeeDTO(long id, String firstName, String lastName, String email, DateTime contractBeginDate, DepartmentDTO department) {
+    public EmployeeDTO(long id, String firstName, String lastName, String email, DateTime contractBeginDate, long departmentId, long municipalityId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.contractBeginDate = contractBeginDate;
-        this.department = department;
+        this.departmentId = departmentId;
+        this.municipalityId = municipalityId;
     }
 
     public long getId() {
@@ -66,16 +67,20 @@ public class EmployeeDTO {
         this.contractBeginDate = contractBeginDate;
     }
 
-    public DepartmentDTO getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(DepartmentDTO department) {
-        this.department = department;
-    }
-
     public long getDepartmentId() {
         return departmentId;
+    }
+
+    public void setDepartmentId(long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public long getMunicipalityId() {
+        return municipalityId;
+    }
+
+    public void setMunicipalityId(long municipalityId) {
+        this.municipalityId = municipalityId;
     }
 
     @Override

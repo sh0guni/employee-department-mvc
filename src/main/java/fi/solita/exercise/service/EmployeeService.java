@@ -2,8 +2,10 @@ package fi.solita.exercise.service;
 
 import fi.solita.exercise.dao.DepartmentsRepository;
 import fi.solita.exercise.dao.EmployeeRepository;
+import fi.solita.exercise.dao.MunicipalityRepository;
 import fi.solita.exercise.domain.Department;
 import fi.solita.exercise.domain.Employee;
+import fi.solita.exercise.domain.Municipality;
 import fi.solita.exercise.util.DtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,28 +24,43 @@ public class EmployeeService {
     private DepartmentsRepository departmentsRepository;
 
     @Autowired
+    private MunicipalityRepository municipalityRepository;
+
+    @Autowired
     private DtoFactory employeeDtoFactory;
 
     @Transactional
-    public EmployeeDTO addEmployee(EmployeeDTO employee) {
+    public EmployeeDTO addEmployee(EmployeeCreateDTO employee) {
         Department department = departmentsRepository.getOne(employee.getDepartmentId());
+        Municipality municipality = municipalityRepository.getOne(employee.getMunicipalityId());
         Employee newEmployee = new Employee(employee.getFirstName(), employee.getLastName(),
-                employee.getEmail(), employee.getContractBeginDate(), department);
+                employee.getEmail(), employee.getContractBeginDate(), department, municipality);
         department.addEmployee(newEmployee);
         employeeRepository.save(newEmployee);
         return employeeDtoFactory.createEmployee(newEmployee);
     }
 
     @Transactional
-    public EmployeeDTO updateEmployee(EmployeeDTO employee) {
+    public EmployeeDTO updateEmployee(EmployeeUpdateDTO employee) {
         Employee domainEmployee = employeeRepository.getOne(employee.getId());
         domainEmployee.setFirstName(employee.getFirstName());
         domainEmployee.setLastName(employee.getLastName());
         domainEmployee.setEmail(employee.getEmail());
         domainEmployee.setContractBeginDate(employee.getContractBeginDate());
-        Department department = departmentsRepository.getOne(employee.getDepartment().getId());
-        domainEmployee.setDepartment(department);
-        department.addEmployee(domainEmployee);
+
+        if (domainEmployee.getDepartmentId() != employee.getDepartmentId()) {
+            domainEmployee.getDepartment().removeEmployee(domainEmployee);
+            Department newDepartment = departmentsRepository.getOne(employee.getDepartmentId());
+            domainEmployee.setDepartment(newDepartment);
+            newDepartment.addEmployee(domainEmployee);
+        }
+
+        if (domainEmployee.getMunicipalityId() != employee.getMunicipalityId()) {
+            domainEmployee.setMunicipality(
+                    municipalityRepository
+                            .getOne(employee.getMunicipalityId()));
+        }
+
         return employeeDtoFactory.createEmployee(domainEmployee);
     }
 
@@ -69,6 +86,8 @@ public class EmployeeService {
 
     @Transactional
     public void deleteEmployee(long id) {
-        employeeRepository.delete(id);
+        Employee employee = employeeRepository.getOne(id);
+        employee.getDepartment().removeEmployee(employee);
+        employeeRepository.delete(employee);
     }
 }

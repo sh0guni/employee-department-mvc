@@ -2,7 +2,9 @@ var app = angular.module('project',[
     'ngRoute',
     'controllers',
     'services',
-    'ui.bootstrap'
+    'ngSanitize',
+    'ui.bootstrap',
+    'ui.select'
 ]);
 
 app.config(['$routeProvider',
@@ -11,8 +13,12 @@ app.config(['$routeProvider',
             when('/', {
                 controller:'IndexCtrl',
                 templateUrl:'partials/index.html'
-            }).
+            });/*.
             otherwise({
                 redirectTo: '/'
-            });
+            });*/
 }]);
+
+app.config(function(uiSelectConfig) {
+    uiSelectConfig.theme = 'bootstrap';
+});

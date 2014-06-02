@@ -1,23 +1,31 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md4">
-            <ul class="departments">
-                Departments:
-                <li ng-repeat="department in departments | orderBy:'id'">
-                    Id: {{department.id}}
-                    Name: {{department.name}}
-                    Employees: {{department.employeeCount}}
-                    <button class="btn btn-default" ng-click="chooseDepartment(department.id, $index)">
-                        Employees
-                    </button>
-                    <button class="btn btn-default" ng-click="openEditDepartmentDlg(department)">
-                        Edit department
-                    </button>
-                    <button class="btn btn-default" ng-click="deleteDepartment(department, $index)">
-                        Remove department
-                    </button>
-                </li>
-            </ul>
+                <h4>Departments:</h4>
+                <accordion close-others="true">
+                    <accordion-group ng-repeat="department in departments | orderBy:'id'" heading="{{department.name}} - Employees: {{department.employeeCount}}" ng-click="getDepartmentEmployees(department.id, $index)" is-open="department.open">
+                        <div>
+                            <ul class="employees">
+                                <li ng-repeat="employee in department.employees | orderBy:'id'">
+                                    Id: {{employee.id}}
+                                    Name: {{employee.firstName}} {{employee.lastName}}
+                                    <button class="btn btn-default" ng-click="openEditEmployeeDlg(employee, department)">
+                                        Edit employee
+                                    </button>
+                                    <button class="btn btn-default" ng-click="deleteEmployee(employee, department)">
+                                        Remove employee
+                                    </button>
+                                </li>
+                            </ul>
+                            <button class="btn btn-default" ng-click="openNewEmployeeDlg(department)">
+                                Add employee
+                            </button>
+                            <button class="btn btn-default" ng-click="openEditDepartmentDlg(department)">
+                                Edit department
+                            </button>
+                        </div>
+                    </accordion-group>
+                </accordion>
             Total number of departments: {{departments.length}}, total number of employees: {{totalEmployees.count}}
             <div class="col-md4">
                 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -25,26 +33,6 @@
                     Add department
                 </button>
             </div>
-        </div>
-    </div>
-    <div>
-        <div>
-            Chosen department: {{chosenDepartment.id}} {{chosenDepartment.name}}
-            <ul class="cemployees">
-                <li ng-repeat="employee in employees | orderBy:'id'">
-                    Id: {{employee.id}}
-                    Name: {{employee.firstName}} {{employee.lastName}}
-                    <button class="btn btn-default" ng-click="openEditEmployeeDlg(employee)">
-                        Edit employee
-                    </button>
-                    <button class="btn btn-default" ng-click="deleteEmployee(employee, $index)">
-                        Remove employee
-                    </button>
-                </li>
-            </ul>
-            <button class="btn btn-default" ng-click="openNewEmployeeDlg()">
-                Add employee
-            </button>
         </div>
     </div>
 </div>

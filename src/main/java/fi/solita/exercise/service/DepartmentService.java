@@ -23,7 +23,7 @@ public class DepartmentService {
     public DepartmentDTO addDepartment(String name) {
         Department department = new Department((name));
         departmentsRepository.save(department);
-        return new DepartmentDTO(department.getId(), department.getName(), 0);
+        return departmentDtoFactory.createDepartment(department);
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +47,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public DepartmentDTO updateDepartment(DepartmentDTO department) {
+    public DepartmentDTO updateDepartment(DepartmentUpdateDTO department) {
         Department domainDepartment = departmentsRepository.getOne(department.getId());
         domainDepartment.setName(department.getName());
         return departmentDtoFactory.createDepartment(domainDepartment);
@@ -55,6 +55,11 @@ public class DepartmentService {
 
     @Transactional
     public void deleteDepartment(long id) {
-        departmentsRepository.delete(id);
+        Department department = departmentsRepository.getOne(id);
+        if (department.getEmployeeCount() > 0) {
+            throw new IllegalArgumentException("Cannot remove department with employees");
+        } else {
+            departmentsRepository.delete(department);
+        }
     }
 }

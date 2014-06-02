@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class Application {
 
+    // Configure for jackson-datatype-joda
     @Bean
     public Module jodaModule() {
         return new JodaModule();

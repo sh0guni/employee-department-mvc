@@ -15,7 +15,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +26,7 @@ import static org.junit.Assert.assertThat;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-@DatabaseSetup("/employeeServiceTestData.xml")
+@DatabaseSetup("/serviceTestData.xml")
 public class EmployeeServiceIntegrationTests {
 
     @Autowired
@@ -38,18 +37,23 @@ public class EmployeeServiceIntegrationTests {
         EmployeeDTO employee = service.getEmployee(100);
         assertEquals(100, employee.getId());
         assertEquals("fname1", employee.getFirstName());
-        assertEquals(100, employee.getDepartment().getId());
-        assertEquals("dep1", employee.getDepartment().getName());
+        assertEquals(100, employee.getDepartmentId());
     }
 
     @Test
     public void addEmployeeTest() throws Exception {
-        EmployeeDTO employee = service.addEmployee(new EmployeeDTO(0, "Simo", "Solita",
-                "simo@solita.fi", new DateTime(), new DepartmentDTO(100, "dep1", 0)));
-        EmployeeDTO employeeFromService = service.getEmployee(employee.getId());
+        EmployeeCreateDTO employee = new EmployeeCreateDTO();
+        employee.setFirstName("Simo");
+        employee.setLastName("Solita");
+        employee.setEmail("simo@solita.fi");
+        employee.setContractBeginDate(new DateTime());
+        employee.setDepartmentId(100);
+        employee.setMunicipalityId(100);
+        EmployeeDTO newEmployee = service.addEmployee(employee);
+        EmployeeDTO employeeFromService = service.getEmployee(newEmployee.getId());
         assertEquals(employee.getFirstName(),
                 employeeFromService.getFirstName());
-        assertEquals("dep1", employeeFromService.getDepartment().getName());
+        assertEquals(100, employeeFromService.getDepartmentId());
     }
 
     @Test
@@ -75,5 +79,23 @@ public class EmployeeServiceIntegrationTests {
         assertEquals(1, employees.size());
         assertThat(employees, IsIterableContainingInAnyOrder
                 .containsInAnyOrder(service.getEmployee(200)));
+    }
+
+    @Test
+    public void changeEmployeeDepartmentTest() throws Exception {
+        EmployeeDTO employee = service.getEmployee(100);
+        EmployeeUpdateDTO updatedEmployee = new EmployeeUpdateDTO();
+        updatedEmployee.setId(100);
+        updatedEmployee.setFirstName(employee.getFirstName());
+        updatedEmployee.setLastName(employee.getLastName());
+        updatedEmployee.setEmail(employee.getEmail());
+        updatedEmployee.setContractBeginDate(employee.getContractBeginDate());
+        updatedEmployee.setDepartmentId(200);
+        service.updateEmployee(updatedEmployee);
+
+        List<EmployeeDTO> employees = service.getEmployeesOfDepartment(200);
+        assertEquals(1, employees.size());
+        assertThat(employees, IsIterableContainingInAnyOrder
+                .containsInAnyOrder(service.getEmployee(100)));
     }
 }
