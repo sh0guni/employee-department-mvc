@@ -1,18 +1,19 @@
 package fi.solita.exercise.service;
 
-import fi.solita.exercise.dao.DepartmentsRepository;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import fi.solita.exercise.dao.DepartmentRepository;
 import fi.solita.exercise.dao.EmployeeRepository;
 import fi.solita.exercise.dao.MunicipalityRepository;
 import fi.solita.exercise.domain.Department;
 import fi.solita.exercise.domain.Employee;
 import fi.solita.exercise.domain.Municipality;
 import fi.solita.exercise.util.DtoFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -21,7 +22,7 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private DepartmentsRepository departmentsRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     private MunicipalityRepository municipalityRepository;
@@ -30,8 +31,8 @@ public class EmployeeService {
     private DtoFactory employeeDtoFactory;
 
     @Transactional
-    public EmployeeDTO addEmployee(EmployeeCreateDTO employee) {
-        Department department = departmentsRepository.getOne(employee.getDepartmentId());
+    public EmployeeDTO addEmployee(final EmployeeCreateDTO employee) {
+        Department department = departmentRepository.getOne(employee.getDepartmentId());
         Municipality municipality = municipalityRepository.getOne(employee.getMunicipalityId());
         Employee newEmployee = new Employee(employee.getFirstName(), employee.getLastName(),
                 employee.getEmail(), employee.getContractBeginDate(), department, municipality);
@@ -41,7 +42,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public EmployeeDTO updateEmployee(EmployeeUpdateDTO employee) {
+    public EmployeeDTO updateEmployee(final EmployeeUpdateDTO employee) {
         Employee domainEmployee = employeeRepository.getOne(employee.getId());
         domainEmployee.setFirstName(employee.getFirstName());
         domainEmployee.setLastName(employee.getLastName());
@@ -49,8 +50,9 @@ public class EmployeeService {
         domainEmployee.setContractBeginDate(employee.getContractBeginDate());
 
         if (domainEmployee.getDepartmentId() != employee.getDepartmentId()) {
-            domainEmployee.getDepartment().removeEmployee(domainEmployee);
-            Department newDepartment = departmentsRepository.getOne(employee.getDepartmentId());
+            Department department = domainEmployee.getDepartment();
+            department.removeEmployee(domainEmployee);
+            Department newDepartment = departmentRepository.getOne(employee.getDepartmentId());
             domainEmployee.setDepartment(newDepartment);
             newDepartment.addEmployee(domainEmployee);
         }
@@ -70,14 +72,14 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public EmployeeDTO getEmployee(long id) {
+    public EmployeeDTO getEmployee(final long id) {
         Employee employee = employeeRepository.getOne(id);
         return employeeDtoFactory.createEmployee(employee);
     }
 
     @Transactional(readOnly = true)
-    public List<EmployeeDTO> getEmployeesOfDepartment(long departmentId) {
-        Department department = departmentsRepository.getOne(departmentId);
+    public List<EmployeeDTO> getEmployeesOfDepartment(final long departmentId) {
+        Department department = departmentRepository.getOne(departmentId);
         List<EmployeeDTO> employees = new ArrayList<>();
         department.getEmployees().forEach(x -> employees.add(
                                      employeeDtoFactory.createEmployee(x)));
@@ -85,9 +87,10 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void deleteEmployee(long id) {
+    public void deleteEmployee(final long id) {
         Employee employee = employeeRepository.getOne(id);
-        employee.getDepartment().removeEmployee(employee);
+        Department department = employee.getDepartment();
+        department.removeEmployee(employee);
         employeeRepository.delete(employee);
     }
 }

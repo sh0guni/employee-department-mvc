@@ -1,65 +1,62 @@
 package fi.solita.exercise.service;
 
-import fi.solita.exercise.dao.DepartmentsRepository;
-import fi.solita.exercise.domain.Department;
-import fi.solita.exercise.util.DtoFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import fi.solita.exercise.dao.DepartmentRepository;
+import fi.solita.exercise.dao.DepartmentWithEmployeeCountDTO;
+import fi.solita.exercise.domain.Department;
+import fi.solita.exercise.util.DtoFactory;
 
 @Service
 public class DepartmentService {
 
     @Autowired
-    private DepartmentsRepository departmentsRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     private DtoFactory departmentDtoFactory;
 
     @Transactional
-    public DepartmentDTO addDepartment(String name) {
+    public DepartmentDTO addDepartment(final String name) {
         Department department = new Department((name));
-        departmentsRepository.save(department);
+        departmentRepository.save(department);
         return departmentDtoFactory.createDepartment(department);
     }
 
     @Transactional(readOnly = true)
     public long findDepartmentCount() {
-        return departmentsRepository.count();
+        return departmentRepository.count();
     }
 
     @Transactional(readOnly = true)
-    public DepartmentDTO getDepartment(long id) {
-        Department department = departmentsRepository.getOne(id);
+    public DepartmentDTO getDepartment(final long id) {
+        Department department = departmentRepository.getOne(id);
         return departmentDtoFactory.createDepartment(department);
     }
 
     @Transactional(readOnly = true)
-    public List<DepartmentDTO> getAllDepartments() {
-        List<DepartmentDTO> departments = new ArrayList<DepartmentDTO>();
-        departmentsRepository.findAll()
-                             .forEach(x -> departments.add(departmentDtoFactory
-                                     .createDepartment(x)));
-        return departments;
+    public List<DepartmentWithEmployeeCountDTO> getAllDepartments() {
+        return departmentRepository.findAllWithEmployeeCount();
     }
 
     @Transactional
-    public DepartmentDTO updateDepartment(DepartmentUpdateDTO department) {
-        Department domainDepartment = departmentsRepository.getOne(department.getId());
+    public DepartmentDTO updateDepartment(final DepartmentUpdateDTO department) {
+        Department domainDepartment = departmentRepository.getOne(department.getId());
         domainDepartment.setName(department.getName());
         return departmentDtoFactory.createDepartment(domainDepartment);
     }
 
     @Transactional
-    public void deleteDepartment(long id) {
-        Department department = departmentsRepository.getOne(id);
+    public void deleteDepartment(final long id) {
+        Department department = departmentRepository.getOne(id);
         if (department.getEmployeeCount() > 0) {
             throw new IllegalArgumentException("Cannot remove department with employees");
         } else {
-            departmentsRepository.delete(department);
+            departmentRepository.delete(department);
         }
     }
 }

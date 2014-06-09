@@ -1,3 +1,4 @@
+DELETE FROM municipality;
 INSERT INTO municipality(id,name) VALUES (1,'Akaa');
 INSERT INTO municipality(id,name) VALUES (2,'Alajärvi');
 INSERT INTO municipality(id,name) VALUES (3,'Alavieska');

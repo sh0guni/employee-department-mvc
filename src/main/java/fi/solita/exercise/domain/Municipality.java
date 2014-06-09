@@ -1,8 +1,12 @@
 package fi.solita.exercise.domain;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.persistence.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Municipality {
@@ -19,7 +23,7 @@ public class Municipality {
     protected Municipality() {
     }
 
-    public Municipality(String name) {
+    public Municipality(final String name) {
             this.name = name;
     }
 
@@ -31,7 +35,7 @@ public class Municipality {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 }

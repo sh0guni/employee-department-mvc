@@ -42,7 +42,7 @@ controllers.controller('IndexCtrl', ['$scope', '$rootScope', '$modal', 'Departme
 
                 modalInstance.result.then(
                     function(editedDepartment) {
-                        angular.copy(editedDepartment, department);
+                        $scope.departments = Department.query();
                     },
                     function() {
                     }
@@ -128,12 +128,12 @@ controllers.controller('IndexCtrl', ['$scope', '$rootScope', '$modal', 'Departme
                                 $scope.departments = Department.query();
                             }, function(data) {
                                 if (data.status === 403) {
-                                    if (department.employeeCount > 0) {
-                                        $scope.alerts.push({
-                                            type: 'danger',
-                                            msg: 'Cannot delete a department with employees'
-                                        });
-                                    }
+                                    $scope.alerts.push({
+                                        type: 'danger',
+                                        msg: 'Cannot delete a department with employees'
+                                    });
+                                    $scope.departments = Department.query();
+                                    $scope.totalEmployees = Employee.count();
                                 }
                             });
                     }

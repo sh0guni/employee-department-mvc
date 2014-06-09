@@ -1,10 +1,16 @@
 package fi.solita.exercise.domain;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 @Entity
 public class Department {
@@ -28,7 +34,7 @@ public class Department {
         return id;
     }
 
-    public Department(String name) {
+    public Department(final String name) {
         this.name = name;
     }
 
@@ -36,7 +42,7 @@ public class Department {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -44,15 +50,15 @@ public class Department {
         return employees;
     }
 
-    public void addEmployee(Employee employee) {
+    public void addEmployee(final Employee employee) {
         employees.add(employee);
     }
 
-    public boolean removeEmployee(Employee employee) {
+    public boolean removeEmployee(final Employee employee) {
         return employees.remove(employee);
     }
 
     public int getEmployeeCount() {
-        return employees.size();
+        return this.employees.size();
     }
 }

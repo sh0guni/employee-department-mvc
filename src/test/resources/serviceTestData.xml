@@ -1,7 +1,0 @@
-<dataset>
-    <department id="100" name="dep1"/>
-    <department id="200" name="dep2"/>
-    <municipality id="100" name="mun1"/>
-    <employee id="100" first_name="fname1" last_name="lname1" contract_begin_date="2014-05-29" email="emp1@dep1.com" department="100" municipality="100"/>
-    <employee id="200" first_name="fname2" last_name="lname2" contract_begin_date="2014-05-29" email="emp2@dep1.com" department="100" municipality="100"/>
-</dataset>

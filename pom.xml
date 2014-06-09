@@ -29,19 +29,24 @@
         <defaultGoal>package</defaultGoal>
         <finalName>basicex</finalName>
 
-        <!--
         <resources>
           <resource>
             <directory>${basedir}/src/main/resources</directory>
           </resource>
         </resources>
-        
+
         <testResources>
           <testResource>
             <directory>${basedir}/src/test/resources</directory>
         </testResource>
         </testResources>
-        -->
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <repositories>
@@ -90,19 +95,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
             </exclusions>
+            -->
         </dependency>
-
+        <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
-
+        -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -166,8 +173,7 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
         </dependency>
-        -->
-        <!--
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -190,7 +196,7 @@
             <artifactId>usertype.core</artifactId>
             <version>3.2.0.GA</version>
         </dependency>
-       
+
         <!-- Jackson JSON Mapper -->
         <!--
         <dependency>
@@ -198,7 +204,7 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
@@ -255,6 +261,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
@@ -268,7 +275,7 @@
             <version>1.1.0</version>
             <scope>test</scope>
         </dependency>
-
+        -->
         <!--
         <dependency>
             <groupId>commons-validator</groupId>

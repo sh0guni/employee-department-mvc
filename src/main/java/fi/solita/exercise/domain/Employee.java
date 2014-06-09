@@ -1,14 +1,25 @@
 package fi.solita.exercise.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 @Entity
+@Table(indexes = {
+        @Index(columnList = "department")
+})
 public class Employee {
 
     @Id
@@ -30,7 +41,7 @@ public class Employee {
 
     @Column
     @NotNull
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime contractBeginDate;
 
     @ManyToOne
@@ -45,7 +56,8 @@ public class Employee {
     protected Employee() {
     }
 
-    public Employee(String firstName, String lastName, String email, DateTime contractBeginDate, Department department, Municipality municipality) {
+    public Employee(final String firstName, final String lastName, final String email, final DateTime contractBeginDate,
+            final Department department, final Municipality municipality) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -62,7 +74,7 @@ public class Employee {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -70,7 +82,7 @@ public class Employee {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -78,7 +90,7 @@ public class Employee {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -86,7 +98,7 @@ public class Employee {
         return contractBeginDate;
     }
 
-    public void setContractBeginDate(DateTime contractBeginDate) {
+    public void setContractBeginDate(final DateTime contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
     }
 
@@ -94,7 +106,7 @@ public class Employee {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(final Department department) {
         this.department = department;
     }
 
@@ -106,7 +118,7 @@ public class Employee {
         return municipality;
     }
 
-    public void setMunicipality(Municipality municipality) {
+    public void setMunicipality(final Municipality municipality) {
         this.municipality = municipality;
     }
 

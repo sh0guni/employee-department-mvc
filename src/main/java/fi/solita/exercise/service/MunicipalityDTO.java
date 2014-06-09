@@ -9,7 +9,7 @@ public class MunicipalityDTO {
     private MunicipalityDTO() {
     }
 
-    public MunicipalityDTO(long id, String name) {
+    public MunicipalityDTO(final long id, final String name) {
         this.id = id;
         this.name = name;
     }
@@ -22,20 +22,23 @@ public class MunicipalityDTO {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         MunicipalityDTO that = (MunicipalityDTO) o;
 
-        if (id != that.id) return false;
+        return id == that.id;
 
-        return true;
     }
 
     @Override

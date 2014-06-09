@@ -20,7 +20,7 @@ public class EmployeeCreateDTO {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -28,7 +28,7 @@ public class EmployeeCreateDTO {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -36,7 +36,7 @@ public class EmployeeCreateDTO {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -44,7 +44,7 @@ public class EmployeeCreateDTO {
         return contractBeginDate;
     }
 
-    public void setContractBeginDate(DateTime contractBeginDate) {
+    public void setContractBeginDate(final DateTime contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
     }
 
@@ -52,7 +52,7 @@ public class EmployeeCreateDTO {
         return departmentId;
     }
 
-    public void setDepartmentId(long departmentId) {
+    public void setDepartmentId(final long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -60,7 +60,7 @@ public class EmployeeCreateDTO {
         return municipalityId;
     }
 
-    public void setMunicipalityId(long municipalityId) {
+    public void setMunicipalityId(final long municipalityId) {
         this.municipalityId = municipalityId;
     }
 }

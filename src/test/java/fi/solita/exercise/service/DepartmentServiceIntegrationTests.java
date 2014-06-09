@@ -1,41 +1,44 @@
 package fi.solita.exercise.service;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import fi.solita.exercise.Application;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
+
+import java.util.stream.Collectors;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import java.util.stream.Collectors;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertEquals;
+import fi.solita.exercise.Application;
+import fi.solita.exercise.domain.Department;
+import fi.solita.exercise.domain.Employee;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
-@DatabaseSetup(value="/serviceTestData.xml", type= DatabaseOperation.CLEAN_INSERT)
-@DatabaseTearDown(value="/serviceTestData.xml", type= DatabaseOperation.DELETE_ALL)
 public class DepartmentServiceIntegrationTests {
 
     @Autowired
     private DepartmentService service;
+
+    @Autowired
+    TestDataService testDataService;
+
+    @Before
+    public void setUp() {
+        testDataService.createDefaultDepartment();
+    }
+
+    @After
+    public void tearDown() {
+        testDataService.clearDatabase();
+    }
 
     @Test
     public void addDepartmentTest() {
@@ -46,7 +49,8 @@ public class DepartmentServiceIntegrationTests {
 
     @Test
     public void findDepartmentCountTest() {
-        assertEquals(2, service.findDepartmentCount());
+
+        assertEquals(1, service.findDepartmentCount());
     }
 
     @Test
@@ -54,13 +58,14 @@ public class DepartmentServiceIntegrationTests {
         assertThat(
                 service.getAllDepartments().stream()
                         .map(x -> x.getName()).collect(Collectors.toList()),
-                containsInAnyOrder("dep1", "dep2")
+                containsInAnyOrder("dep1")
         );
     }
 
     @Test
     public void deleteDepartmentTest() {
-        service.deleteDepartment(200);
+        Department department = testDataService.createDefaultDepartment();
+        service.deleteDepartment(department.getId());
         assertEquals(1, service.findDepartmentCount());
         assertThat(
                 service.getAllDepartments().stream()
@@ -71,6 +76,7 @@ public class DepartmentServiceIntegrationTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteDepartmentWithEmployeesTest() {
-        service.deleteDepartment(100);
+        Employee employee = testDataService.createDefaultEmployee();
+        service.deleteDepartment(employee.getDepartmentId());
     }
 }

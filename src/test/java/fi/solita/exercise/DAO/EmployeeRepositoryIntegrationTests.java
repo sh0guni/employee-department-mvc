@@ -1,11 +1,12 @@
 package fi.solita.exercise.dao;
 
 
-import fi.solita.exercise.Application;
-import fi.solita.exercise.domain.Department;
-import fi.solita.exercise.domain.Employee;
-import fi.solita.exercise.domain.Municipality;
+import static org.junit.Assert.assertEquals;
+
+import javax.validation.ConstraintViolationException;
+
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.validation.ConstraintViolationException;
-
-import static org.junit.Assert.assertEquals;
+import fi.solita.exercise.Application;
+import fi.solita.exercise.domain.Department;
+import fi.solita.exercise.domain.Employee;
+import fi.solita.exercise.domain.Municipality;
+import fi.solita.exercise.service.TestDataService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -27,40 +30,38 @@ public class EmployeeRepositoryIntegrationTests {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private DepartmentsRepository departmentsRepository;
+    TestDataService testDataService;
 
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
+    @After
+    public void tearDown() {
+        testDataService.clearDatabase();
+    }
 
     @Test
     public void addEmployeeTest() throws Exception {
-        Department department = new Department("testDepartment");
-        departmentsRepository.saveAndFlush(department);
-        Municipality municipality = municipalityRepository.findOne(Long.valueOf(1));
+        Department department = testDataService.createDefaultDepartment();
+        Municipality municipality = testDataService.createDefaultMunicipality();
         Employee employee = new Employee("Simo", "Solita", "simo@solita.fi", new DateTime(), department, municipality);
         employeeRepository.saveAndFlush(employee);
-        department.addEmployee(employee);
-
 
         Iterable<Employee> employees = employeeRepository.findAll();
         assertEquals(employee.getId(), employees.iterator().next().getId());
         assertEquals(department.getId(), employee.getDepartment().getId());
-        assertEquals(employee.getId(), department.getEmployees().iterator().next().getId());
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void addEmployeeWithoutDepartmentTest() throws Exception {
-        Municipality municipality = municipalityRepository.findOne(Long.valueOf(1));
+        Municipality municipality = testDataService.createDefaultMunicipality();
         Employee employee = new Employee("Simo", "Solita", "simo@solita.fi", new DateTime(), null, municipality);
         employeeRepository.saveAndFlush(employee);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void addEmployeeWithInvalidEmail() throws Exception {
-        Department department = new Department("testDepartment");
-        departmentsRepository.saveAndFlush(department);
-        Municipality municipality = municipalityRepository.findOne(Long.valueOf(1));
-        Employee employee = new Employee("Simo", "Solita", "invalid", new DateTime(), department, municipality);
+        Department department = testDataService.createDefaultDepartment();
+        Municipality municipality = testDataService.createDefaultMunicipality();
+        String email = "invalid";
+        Employee employee = new Employee("Simo", "Solita", email, new DateTime(), department, municipality);
         employeeRepository.saveAndFlush(employee);
     }
 }

@@ -8,10 +8,7 @@ public class DepartmentDTO {
 
     private int employeeCount;
 
-    private DepartmentDTO() {
-    }
-
-    public DepartmentDTO(long id, String name, int employeeCount) {
+    public DepartmentDTO(final long id, final String name, final int employeeCount) {
         this.id = id;
         this.name = name;
         this.employeeCount = employeeCount;
@@ -25,7 +22,7 @@ public class DepartmentDTO {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -33,16 +30,19 @@ public class DepartmentDTO {
         return employeeCount;
     }
 
+    public void setEmployeeCount(final int employeeCount) {
+        this.employeeCount = employeeCount;
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         DepartmentDTO that = (DepartmentDTO) o;
 
-        if (id != that.id) return false;
+        return id == that.id;
 
-        return true;
     }
 
     @Override

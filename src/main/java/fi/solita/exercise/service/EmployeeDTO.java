@@ -21,7 +21,7 @@ public class EmployeeDTO {
     private EmployeeDTO() {
     }
 
-    public EmployeeDTO(long id, String firstName, String lastName, String email, DateTime contractBeginDate, long departmentId, long municipalityId) {
+    public EmployeeDTO(final long id, final String firstName, final String lastName, final String email, final DateTime contractBeginDate, final long departmentId, final long municipalityId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,7 +39,7 @@ public class EmployeeDTO {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -47,7 +47,7 @@ public class EmployeeDTO {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -55,7 +55,7 @@ public class EmployeeDTO {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -63,7 +63,7 @@ public class EmployeeDTO {
         return contractBeginDate;
     }
 
-    public void setContractBeginDate(DateTime contractBeginDate) {
+    public void setContractBeginDate(final DateTime contractBeginDate) {
         this.contractBeginDate = contractBeginDate;
     }
 
@@ -71,7 +71,7 @@ public class EmployeeDTO {
         return departmentId;
     }
 
-    public void setDepartmentId(long departmentId) {
+    public void setDepartmentId(final long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -79,20 +79,23 @@ public class EmployeeDTO {
         return municipalityId;
     }
 
-    public void setMunicipalityId(long municipalityId) {
+    public void setMunicipalityId(final long municipalityId) {
         this.municipalityId = municipalityId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         EmployeeDTO that = (EmployeeDTO) o;
 
-        if (id != that.id) return false;
+        return id == that.id;
 
-        return true;
     }
 
     @Override

@@ -11,18 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class DtoFactory {
 
-    public EmployeeDTO createEmployee(Employee domain) {
+    public EmployeeDTO createEmployee(final Employee domain) {
         return new EmployeeDTO(domain.getId(),
                 domain.getFirstName(), domain.getLastName(),
                 domain.getEmail(), domain.getContractBeginDate(),
                 domain.getDepartmentId(), domain.getMunicipalityId());
     }
 
-    public DepartmentDTO createDepartment(Department domain) {
+    public DepartmentDTO createDepartment(final Department domain) {
         return new DepartmentDTO(domain.getId(), domain.getName(), domain.getEmployeeCount());
     }
 
-    public MunicipalityDTO createMunicipality(Municipality domain) {
+    public MunicipalityDTO createMunicipality(final Municipality domain) {
         return new MunicipalityDTO(domain.getId(), domain.getName());
     }
 }

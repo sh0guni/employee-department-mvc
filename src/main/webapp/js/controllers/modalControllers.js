@@ -31,7 +31,7 @@ controllers.controller('AddNewDepartmentCtrl', ['$scope', '$modalInstance', 'Dep
 
 controllers.controller('EditDepartmentCtrl', ['$scope', '$modalInstance', 'Department', 'originalDepartment',
     function($scope, $modalInstance, Department, originalDepartment) {
-        $scope.department = new Department();//= angular.copy(originalDepartment);
+        $scope.department = new Department();
         $scope.department.id = originalDepartment.id;
         $scope.department.name = originalDepartment.name;
 
@@ -109,7 +109,6 @@ controllers.controller('EditEmployeeCtrl', ['$scope', '$modalInstance', 'origina
         };
 
         $scope.submit = function() {
-            $scope.employee.municipalityId = $scope.municipality.selected.id;
             $scope.employee.municipalityId = $scope.municipality.selected.id;
             $scope.employee.$update({employeeId:$scope.employee.id}, function(data) {
                 $modalInstance.close(data);

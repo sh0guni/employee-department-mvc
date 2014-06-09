@@ -36,7 +36,8 @@
         <div class="form-group" data-ng-class="{'has-error': theForm.inputType.$invalid,'has-success': theForm.inputType.$valid}">
             <label for="inputType" class="col-sm-3 control-label">Department</label>
             <div class="col-sm-9">
-                <select id="inputType" name="inputType" class="form-control" data-ng-model="employee.departmentId" required="true" ng-options="department.id as department.name for department in departments">
+                <select id="inputType" name="inputType" class="form-control" data-ng-model="employee.departmentId" required="true"
+                        ng-options="department.id as department.name for department in departments">
                 </select>
             </div>
         </div>
