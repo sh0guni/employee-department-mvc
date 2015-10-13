@@ -1,3 +1,41 @@
-ddd
-
-<h1>{{h1Text}}</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md4">
+                <h4>Departments:</h4>
+                <accordion close-others="true">
+                    <accordion-group ng-repeat="department in departments | orderBy:'id'" heading="{{department.name}} - Employees: {{department.employeeCount}}" ng-click="getDepartmentEmployees(department.id, $index)" is-open="department.open">
+                        <div>
+                            <ul class="employees">
+                                <li ng-repeat="employee in department.employees | orderBy:'id'">
+                                    Id: {{employee.id}}
+                                    Name: {{employee.firstName}} {{employee.lastName}}
+                                    <button class="btn btn-default" ng-click="openEditEmployeeDlg(employee, department)">
+                                        Edit employee
+                                    </button>
+                                    <button class="btn btn-default" ng-click="deleteEmployee(employee, department)">
+                                        Remove employee
+                                    </button>
+                                </li>
+                            </ul>
+                            <button class="btn btn-default" ng-click="openNewEmployeeDlg(department)">
+                                Add employee
+                            </button>
+                            <button class="btn btn-default" ng-click="openEditDepartmentDlg(department)">
+                                Edit department
+                            </button>
+                            <button class="btn btn-default" ng-click="deleteDepartment(department)">
+                                Remove department
+                            </button>
+                        </div>
+                    </accordion-group>
+                </accordion>
+            Total number of departments: {{departments.length}}, total number of employees: {{totalEmployees.count}}
+            <div class="col-md4">
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                <button class="btn btn-default" ng-click="openNewDepartmentDlg()">
+                    Add department
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

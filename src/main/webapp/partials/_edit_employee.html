@@ -1,0 +1,60 @@
+
+<div class="modal-header">
+    <h4 class="modal-title">Edit employee info</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="theForm" role="form" data-ng-submit="submit();">
+        <div class="form-group" data-ng-class="{'has-error': theForm.firstName.$invalid,'has-success': theForm.firstName.$valid}">
+            <label for="firstName" class="col-sm-3 control-label">First name</label>
+            <div class="col-sm-9">
+                <input id="firstName" name="firstName" type="text" class="form-control" data-ng-model="employee.firstName" required="true"/>
+            </div>
+        </div>
+        <div class="form-group" data-ng-class="{'has-error': theForm.lastName.$invalid,'has-success': theForm.lastName.$valid}">
+            <label for="lastName" class="col-sm-3 control-label">Last name</label>
+            <div class="col-sm-9">
+                <input id="lastName" name="lastName" type="text" class="form-control" data-ng-model="employee.lastName" required/>
+            </div>
+        </div>
+        <div class="form-group" data-ng-class="{'has-error': theForm.email.$invalid,'has-success': theForm.email.$valid}">
+            <label for="email" class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-9">
+                <input id="email" type="email" name="email" type="text" class="form-control" data-ng-model="employee.email" required/>
+            </div>
+        </div>
+        <div class="form-group" data-ng-class="{'has-success': theForm.contractBeginDate.$valid,'has-error': theForm.contractBeginDate.$invalid}">
+            <label for="contractBeginDate" class="col-sm-3 control-label">Contract begin date</label>
+            <div class="col-sm-9">
+                <div class="input-group datepicker-popup">
+                    <input id="contractBeginDate" name="contractBeginDate" type="text" class="form-control" datepicker-popup="yyyy-MM-dd" data-ng-model="employee.contractBeginDate" data-is-open="contractBeginDateOptions.open" datepicker-options="contractBeginDateOptions" data-show-weeks="false" data-show-button-bar="false" data-min="contractBeginDateOptions.minimum" required="true" />
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" data-ng-click="openContractBeginDate($event);" type="button"><span class="glyphicon glyphicon-calendar"></span>&#xFEFF;</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" data-ng-class="{'has-error': theForm.inputType.$invalid,'has-success': theForm.inputType.$valid}">
+            <label for="inputType" class="col-sm-3 control-label">Department</label>
+            <div class="col-sm-9">
+                <select id="inputType" name="inputType" class="form-control" data-ng-model="employee.departmentId" required="true"
+                        ng-options="department.id as department.name for department in departments">
+                </select>
+            </div>
+        </div>
+        <div class="form-group" data-ng-class="{'has-error': theForm.municipalityInput.$invalid,'has-success': theForm.municipalityInput.$valid}">
+            <label for="municipalityInput" class="col-sm-3 control-label">Municipality:</label>
+            <div class="col-sm-9">
+                <ui-select id="municipalityInput" name="municipalityInput" ng-model="municipality.selected" theme="bootstrap" required>
+                    <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="municipality in municipalities | filter: $select.search">
+                        <div ng-bind-html="municipality.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="cancel();">Cancel</button>
+    <button type="submit" class="btn btn-primary" data-ng-disabled="theForm.$invalid" data-ng-click="submit();">Save changes</button>
+</div>
